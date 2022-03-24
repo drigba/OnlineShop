@@ -45,4 +45,16 @@ public class ProductService {
                 .map(this::productToDTO)
                 .collect(Collectors.toList());
     }
+
+    public ProductDTO updateProduct(ProductDTO productDTO, Integer id) {
+        productRepository.getById(id).setName(productDTO.getName());
+        productRepository.getById(id).setPrice(productDTO.getPrice());
+        productRepository.getById(id).setProductType(productDTO.getProductType());
+        productRepository.getById(id).setDescription(productDTO.getDescription());
+        return productToDTO(productRepository.getById(id));
+    }
+
+    public void deleteProduct(Integer id) {
+        productRepository.deleteById(id);
+    }
 }
