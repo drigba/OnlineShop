@@ -37,7 +37,7 @@ public class ProductServiceTest {
         product.setProductType(ProductType.FOOD);
         product.setDescription("A kenyer jo.");
         product.setPopularity(64);
-        //  when(productRepository.findById(1).thenReturn(Optional.of(product));
+        when(productRepository.findById(1)).thenReturn(Optional.of(product));
     }
 
     @Test
