@@ -51,6 +51,7 @@ public class ProductService {
         productRepository.getById(id).setPrice(productDTO.getPrice());
         productRepository.getById(id).setProductType(productDTO.getProductType());
         productRepository.getById(id).setDescription(productDTO.getDescription());
+        productRepository.getById(id).setPopularity(productDTO.getPopularity());
         return productToDTO(productRepository.getById(id));
     }
 

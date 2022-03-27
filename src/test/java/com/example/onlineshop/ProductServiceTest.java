@@ -5,7 +5,7 @@ import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.enums.ProductType;
 import com.example.onlineshop.repository.ProductRepository;
 import com.example.onlineshop.service.ProductService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class ProductServiceTest {
         product.setProductType(ProductType.FOOD);
         product.setDescription("A kenyer jo.");
         product.setPopularity(64);
-        when(productRepository.findById(1)).thenReturn(Optional.of(product));
+        when(productRepository.getById(1)).thenReturn(product);
     }
 
     @Test
