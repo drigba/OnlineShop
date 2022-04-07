@@ -10,6 +10,11 @@ import com.example.onlineshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 @Service
 public class CartService {
     @Autowired
@@ -41,6 +46,17 @@ public class CartService {
     public void deleteProductFromCart(ProductDTO productDTO, CartDTO cartDTO){
         Cart cart = dtoToCart(cartDTO);
         cart.getProducts().remove(productRepository.findByNameAndPriceAndDescription(productDTO.getName(), productDTO.getPrice(), productDTO.getDescription()));
+        cartRepository.save(cart);
+    }
+
+    public Map<Product, Long> getCartContent(CartDTO cartDTO){
+        Cart cart = dtoToCart(cartDTO);
+        return cart.getProducts().stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    }
+
+    public void deleteAllProductsFromCart(CartDTO cartDTO){
+        Cart cart = dtoToCart(cartDTO);
+        cart.getProducts().clear();
         cartRepository.save(cart);
     }
 }
