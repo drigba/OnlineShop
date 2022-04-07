@@ -17,7 +17,11 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToMany
-    // TODO @JoinTable
+    @JoinTable(
+            name = "products_carts",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
     private List<Product> products;
     private Integer sumPrice;
 }
