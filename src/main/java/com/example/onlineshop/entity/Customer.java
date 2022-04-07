@@ -15,9 +15,8 @@ import java.util.List;
 @SuperBuilder
 public class Customer extends Person {
     private String address;
-    @OneToMany
-    //TODO JoinColumn
-    private List<Product> cart;
+    @OneToOne
+    private Cart cart;
     @OneToMany
     //TODO JoinColumn
     private List<Product> favourites;
