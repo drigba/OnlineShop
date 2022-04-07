@@ -26,6 +26,9 @@ public class CartService {
     @Autowired
     private CartMapper cartMapper;
 
+    @Autowired
+    private ProductService productService;
+
     private Cart dtoToCart(CartDTO cartDTO){
         return cartMapper.dtoToEntity(cartDTO);
     }
@@ -37,21 +40,26 @@ public class CartService {
                 .build();
     }
 
-    public void addProductToCart(ProductDTO productDTO, CartDTO cartDTO){
+    public CartDTO addProductToCart(ProductDTO productDTO, CartDTO cartDTO){
         Cart cart = dtoToCart(cartDTO);
         cart.getProducts().add(productRepository.findByNameAndPriceAndDescription(productDTO.getName(), productDTO.getPrice(), productDTO.getDescription()));
         cartRepository.save(cart);
+        return cartToDTO(cart);
     }
 
-    public void deleteProductFromCart(ProductDTO productDTO, CartDTO cartDTO){
+    public CartDTO deleteProductFromCart(ProductDTO productDTO, CartDTO cartDTO){
         Cart cart = dtoToCart(cartDTO);
         cart.getProducts().remove(productRepository.findByNameAndPriceAndDescription(productDTO.getName(), productDTO.getPrice(), productDTO.getDescription()));
         cartRepository.save(cart);
+        return cartToDTO(cart);
     }
 
-    public Map<Product, Long> getCartContent(CartDTO cartDTO){
+    public Map<ProductDTO, Long> getCartContent(CartDTO cartDTO){
         Cart cart = dtoToCart(cartDTO);
-        return cart.getProducts().stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        return productService.getSomeProducts(cart.getProducts())
+                .stream()
+                .collect(
+                        Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
     public void deleteAllProductsFromCart(CartDTO cartDTO){

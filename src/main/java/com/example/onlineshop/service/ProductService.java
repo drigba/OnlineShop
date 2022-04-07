@@ -58,4 +58,11 @@ public class ProductService {
     public void deleteProduct(Integer id) {
         productRepository.deleteById(id);
     }
+
+    public List<ProductDTO> getSomeProducts(List<Product> products) {
+        return products
+                .stream()
+                .map(this::productToDTO)
+                .collect(Collectors.toList());
+    }
 }
