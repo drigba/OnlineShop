@@ -2,12 +2,15 @@ package com.example.onlineshop.service;
 
 import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.entity.Product;
+import com.example.onlineshop.enums.ProductType;
 import com.example.onlineshop.mapper.ProductMapper;
 import com.example.onlineshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,5 +67,26 @@ public class ProductService {
                 .stream()
                 .map(this::productToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<ProductDTO> getProductsByType(ProductType type) {
+        return productRepository.findByProductType(type)
+                .stream()
+                .map(this::productToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductDTO> sortProductsByPrice(List<ProductDTO> productDTOList, boolean isReverse){
+        if(!isReverse)
+        {
+            return productDTOList.stream()
+                    .sorted(Comparator.comparingInt(ProductDTO::getPrice))
+                    .collect(Collectors.toList());
+        }
+        else{
+            return productDTOList.stream()
+                    .sorted(Comparator.comparingInt(ProductDTO::getPrice).reversed())
+                    .collect(Collectors.toList());
+        }
     }
 }

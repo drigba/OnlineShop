@@ -1,6 +1,7 @@
 package com.example.onlineshop.controller;
 
 import com.example.onlineshop.dtos.ProductDTO;
+import com.example.onlineshop.enums.ProductType;
 import com.example.onlineshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,23 @@ public class ProductController {
         catch(Exception e)
         {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @GetMapping(path="/getbytype")
+    public List<ProductDTO> getProductsByType(@RequestParam ProductType productType)
+    {
+        return productService.getProductsByType(productType);
+    }
+
+    @GetMapping(path="/sortbyprice")
+    public List<ProductDTO> sortByPrice(@RequestParam boolean isFiltered, @RequestParam ProductType productType,@RequestParam boolean isReverse){
+        if(isFiltered)
+        {
+            return productService.sortProductsByPrice(productService.getProductsByType(productType), isReverse);
+        }
+        else{
+            return productService.sortProductsByPrice(getAllProducts(), isReverse);
         }
     }
 }
