@@ -67,4 +67,10 @@ public class ProductServiceTest {
     {
         // TODO
     }
+
+    @Test
+    public void getAllProducts()
+    {
+
+    }
 }
