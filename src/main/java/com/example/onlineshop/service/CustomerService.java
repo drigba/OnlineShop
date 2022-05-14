@@ -1,11 +1,16 @@
 package com.example.onlineshop.service;
 
 import com.example.onlineshop.dtos.CustomerDTO;
+import com.example.onlineshop.entity.Cart;
 import com.example.onlineshop.entity.Customer;
 import com.example.onlineshop.mapper.CustomerMapper;
+import com.example.onlineshop.repository.CartRepository;
 import com.example.onlineshop.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomerService {
@@ -14,6 +19,9 @@ public class CustomerService {
 
     @Autowired
     private CustomerMapper customerMapper;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     private Customer dtoToCustomer(CustomerDTO customerDTO)
     {
@@ -29,5 +37,19 @@ public class CustomerService {
                 .favourites(customer.getFavourites())
                 .address(customer.getAddress())
                 .build();
+    }
+
+    @Scheduled(cron = "0 0 3 1 * ?")
+    @Transactional(value = "")
+    protected void autoCartEmpty(){
+        customerRepository.findAll().stream()
+                .filter(customer -> !customer.getCart().getProducts().isEmpty())
+                .forEach(customer -> {
+                    Cart cart = customer.getCart();
+                    cart.getProducts().forEach(product -> customer.getFavourites().add(product));
+                    cart.getProducts().clear();
+                    cart.setSumPrice(0);
+                    cartRepository.save(cart);
+                });
     }
 }

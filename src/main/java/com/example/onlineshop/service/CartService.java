@@ -65,6 +65,7 @@ public class CartService {
     public void deleteAllProductsFromCart(CartDTO cartDTO){
         Cart cart = dtoToCart(cartDTO);
         cart.getProducts().clear();
+        cart.setSumPrice(0);
         cartRepository.save(cart);
     }
 }
