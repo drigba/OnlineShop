@@ -30,7 +30,13 @@ public class RetailerService {
     @Autowired
     private RetailerMapper retailerMapper;
 
-    private Retailer dtoToRetailer(RetailerDTO retailerDTO){ return  retailerMapper.dtoToEntity(retailerDTO);}
+    private Retailer dtoToRetailer(RetailerDTO retailerDTO){
+        return Retailer.builder()
+                .address(retailerDTO.getAddress())
+                .products(retailerDTO.getProducts())
+                .sold(retailerDTO.getSold())
+                .build();
+    }
 
     private RetailerDTO retailerToDTO(Retailer retailer){
         return  RetailerDTO.builder()

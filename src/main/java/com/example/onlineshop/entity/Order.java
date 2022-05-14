@@ -18,7 +18,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String fromAddress;
-    private String Address;
+    private String address;
     @ManyToMany
     @JoinTable(
             name = "orders_products",

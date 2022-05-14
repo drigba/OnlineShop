@@ -2,6 +2,7 @@ package com.example.onlineshop.service;
 
 import com.example.onlineshop.TestEnvContainer;
 import com.example.onlineshop.dtos.OrderDTO;
+import com.example.onlineshop.entity.Order;
 import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.enums.OrderStatus;
 import com.example.onlineshop.enums.ProductType;
@@ -22,26 +23,30 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(OrderService.class)
 @ContextConfiguration(classes = TestEnvContainer.class)
 class OrderServiceTest {
-    private OrderService orderService = new OrderService();
-    /*
+    //private OrderService orderService = new OrderService();
+
     @Autowired
     private MockMvc mvc;
 
     @MockBean
     private OrderService orderService;
-    */
 
 
-    @Autowired
+
+    @MockBean
     private OrderRepository orderRepository;
 
+/*
     @Autowired
     private OrderMapper orderMapper;
+
+ */
 
     private OrderDTO orderDTO;
 
@@ -53,12 +58,23 @@ class OrderServiceTest {
 
 
         orderDTO = new OrderDTO();
-        orderDTO.setId(1);
+        //orderDTO.setId(1);
         orderDTO.setFromAddress("21_Jumpstreet");
         orderDTO.setAddress("Backstreet");
         orderDTO.setProductList(_prod);
         orderDTO.setPrice(600);
         orderDTO.setOrderStatus(OrderStatus.DELIVERED);
+
+        //when(orderRepository.findAll()).then();
+        Order order = new Order();
+            order.setId(1);
+            order.setFromAddress("21_Jumpstreet");
+            order.setAddress("Backstreet");
+            order.setProductList(_prod);
+            order.setPrice(600);
+            order.setOrderStatus(OrderStatus.DELIVERED);
+
+
     }
 
     @Test

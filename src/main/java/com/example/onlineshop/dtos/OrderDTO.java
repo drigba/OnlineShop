@@ -14,9 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class OrderDTO {
-    private Integer id;
     private String fromAddress;
-    private String Address;
+    private String address;
     private List<Product> productList;
     private Integer price;
     private OrderStatus orderStatus;

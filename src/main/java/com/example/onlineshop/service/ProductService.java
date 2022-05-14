@@ -23,7 +23,13 @@ public class ProductService {
     private ProductMapper productMapper;
 
     private Product dtoToProduct(ProductDTO productDTO){
-        return productMapper.dtoToEntity(productDTO);
+        return Product.builder()
+                .name(productDTO.getName())
+                .price(productDTO.getPrice())
+                .productType(productDTO.getProductType())
+                .description(productDTO.getDescription())
+                .popularity(productDTO.getPopularity())
+                .build();
     }
 
     private ProductDTO productToDTO(Product product){
