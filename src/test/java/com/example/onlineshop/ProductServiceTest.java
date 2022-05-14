@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.Assert;
@@ -26,15 +27,18 @@ import static org.mockito.Mockito.when;
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProductService.class)
+@ContextConfiguration(classes = TestEnvContainer.class)
 public class ProductServiceTest {
 
     @Autowired
     private MockMvc mvc;
-    @MockBean
-    private ProductService productService;
 
     @MockBean
     private ProductRepository productRepository;
+
+    @MockBean
+    private ProductService productService;
+    
 
     @BeforeEach
     public void init(){
