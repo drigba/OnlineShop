@@ -8,13 +8,9 @@ import com.example.onlineshop.mapper.CustomerMapper;
 import com.example.onlineshop.repository.CartRepository;
 import com.example.onlineshop.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -47,7 +43,7 @@ public class CustomerService {
     }
 
     @Scheduled(cron = "0 0 3 1 * ?")
-    @Transactional(value = "")
+    @Transactional(value = "1")
     protected void autoCartEmpty(){
         customerRepository.findAll().stream()
                 .filter(customer -> !customer.getCart().getProducts().isEmpty())

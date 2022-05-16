@@ -1,7 +1,6 @@
 package com.example.onlineshop.dtos;
 
 
-import com.example.onlineshop.entity.Cart;
 import com.example.onlineshop.entity.Order;
 import com.example.onlineshop.entity.Product;
 import lombok.AllArgsConstructor;

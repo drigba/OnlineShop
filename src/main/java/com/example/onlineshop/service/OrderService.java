@@ -1,7 +1,6 @@
 package com.example.onlineshop.service;
 
 import com.example.onlineshop.dtos.OrderDTO;
-import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.entity.Order;
 import com.example.onlineshop.enums.OrderStatus;
 import com.example.onlineshop.mapper.OrderMapper;
