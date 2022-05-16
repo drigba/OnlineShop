@@ -42,10 +42,10 @@ public class EmailService {
     @Value("${spring.mail.password}")
     private String password;
 
-    @Autowired
+//    @Autowired
     private JavaMailSender mailSender;
 
-    @Bean
+//    @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(host);
@@ -65,6 +65,7 @@ public class EmailService {
 
     public void sendMessage(String[] to, String subject, String shopName)
     {
+        mailSender = getJavaMailSender();
         try(Reader reader = new InputStreamReader(testEmailResource.getInputStream(), StandardCharsets.UTF_8)){
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, StandardCharsets.UTF_8.toString());
