@@ -10,10 +10,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class ProductDTO {
+public class ProductDTO implements Comparable<ProductDTO> {
     private String name;
     private Integer price;
     private ProductType productType;
     private String description;
     private Integer popularity;
+
+    @Override
+    public int compareTo(ProductDTO rhs) {
+
+        return 1;
+    }
 }

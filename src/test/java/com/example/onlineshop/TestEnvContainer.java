@@ -6,6 +6,7 @@ import com.example.onlineshop.mapper.ProductMapper;
 import com.example.onlineshop.repository.OrderRepository;
 import com.example.onlineshop.repository.ProductRepository;
 import com.example.onlineshop.service.ProductService;
+import com.example.onlineshop.service.OrderService;
 import org.mockito.Mockito;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
@@ -28,11 +29,11 @@ public class TestEnvContainer {
         return mockproductRepository;
     }
 
-    @Bean
+   /* @Bean
     public OrderRepository orderRepository(){
         OrderRepository mockorderRepository = Mockito.mock(OrderRepository.class);
         return mockorderRepository;
-    }
+    }*/
 
     @Bean
     public ProductService productService(){
@@ -52,7 +53,10 @@ public class TestEnvContainer {
         return mockorderMapper;
     }
 
-
+    @Bean
+    public OrderService orderService() {
+        return new OrderService();
+    }
 
 
 

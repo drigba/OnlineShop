@@ -26,19 +26,19 @@ import static org.mockito.Mockito.when;
 
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
-@WebMvcTest(ProductService.class)
+//@WebMvcTest(ProductService.class)
 @ContextConfiguration(classes = TestEnvContainer.class)
 public class ProductServiceTest {
 
-    @Autowired
-    private MockMvc mvc;
+    //@Autowired
+    //private MockMvc mvc;
 
     @MockBean
     private ProductRepository productRepository;
 
     @MockBean
     private ProductService productService;
-    
+
 
     @BeforeEach
     public void init(){
