@@ -3,6 +3,8 @@ package com.example.onlineshop;
 import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.enums.ProductType;
+import com.example.onlineshop.repository.CartRepository;
+import com.example.onlineshop.repository.OrderRepository;
 import com.example.onlineshop.repository.ProductRepository;
 import com.example.onlineshop.service.ProductService;
 import org.junit.Before;
@@ -18,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +30,7 @@ import static org.mockito.Mockito.when;
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 //@WebMvcTest(ProductService.class)
+@SpringBootTest
 @ContextConfiguration(classes = TestEnvContainer.class)
 public class ProductServiceTest {
 
@@ -37,31 +41,62 @@ public class ProductServiceTest {
     private ProductRepository productRepository;
 
     @MockBean
+    private OrderRepository orderRepository;
+
+    @MockBean
+    private CartRepository cartRepository;
+
+    @Autowired
     private ProductService productService;
 
+    List<ProductDTO> _list = new ArrayList<>();
+    List<Product> _prodlist = new ArrayList<>();
+    Product product = new Product();
+    ProductDTO productDTO = new ProductDTO();
+    Product product2 = new Product();
+    ProductDTO productDTO2 = new ProductDTO();
 
     @BeforeEach
     public void init(){
-        Product product = new Product();
         product.setId(1);
         product.setName("Kenyer");
         product.setPrice(1000);
         product.setProductType(ProductType.FOOD);
         product.setDescription("A kenyer jo.");
         product.setPopularity(64);
+
+        _prodlist.add(product);
+
+        productDTO.setName("Kenyer");
+        productDTO.setPrice(1000);
+        productDTO.setProductType(ProductType.FOOD);
+        productDTO.setDescription("A kenyer jo.");
+        productDTO.setPopularity(64);
+
+        _list.add(productDTO);
+
+
+        product2.setId(2);
+        product2.setName("Kifli");
+        product2.setPrice(300);
+        product2.setProductType(ProductType.FOOD);
+        product2.setDescription("Sajtos kifli");
+        product2.setPopularity(80);
+
+        _prodlist.add(product2);
+
+
+        productDTO2.setName("Kifli");
+        productDTO2.setPrice(300);
+        productDTO2.setProductType(ProductType.FOOD);
+        productDTO2.setDescription("Sajtos kifli");
+        productDTO2.setPopularity(80);
+
+        _list.add(productDTO2);
+
         when(productRepository.getById(1)).thenReturn(product);
     }
 
-    @Test
-    public void productService_not_null(){
-        Assert.notNull(productService,"productService not null");
-    }
-
-    @Test
-    public void productRepository_not_null(){
-        System.out.println("shitass: " + productRepository.getById(1).getName());
-        Assert.notNull(productRepository,"productRepository not null");
-    }
 
     @Test
     public void createProduct(){
@@ -70,11 +105,24 @@ public class ProductServiceTest {
         productDTO.setPrice(23589115);
         productDTO.setProductType(ProductType.ELECTRONICS);
 
-        System.out.println("productDTO: " + productDTO.getName());
-        Assert.notNull(productDTO,"productDTo not null");
-
-
         assertThat(productService.createProduct(productDTO)).isEqualTo(productDTO);
+    }
+
+    @Before
+    public void init1(){
+
+
+        //when(productRepository.getById(2)).thenReturn(product2);
+    }
+
+    @Test
+    public void getAllProducts()
+    {
+        when(this.productRepository.findAll()).thenReturn(_prodlist);
+
+        assertThat(this.productService.getAllProducts().get(0).getDescription()).isEqualTo("A kenyer jo.");
+        assertThat(this.productService.getAllProducts().get(1).getDescription()).isEqualTo("Sajtos kifli");
+        assertThat(this.productService.getAllProducts()).isEqualTo(_list);
     }
 
     @Test
@@ -95,26 +143,48 @@ public class ProductServiceTest {
         // TODO
     }
 
-    @Before
-    public void init1(){
-        Product product = new Product();
-        product.setId(2);
-        product.setName("Kifli");
-        product.setPrice(500);
-        product.setProductType(ProductType.FOOD);
-        product.setDescription("A kifli jo.");
-        product.setPopularity(80);
-        when(productRepository.getById(2)).thenReturn(product);
+    @Test
+    void getSomeProducts() {
+        assertThat(this.productService.getSomeProducts(_prodlist)).isEqualTo(_list);
     }
 
     @Test
-    public void getAllProducts()
-    {
-        List<ProductDTO> found = productService.getAllProducts();
-        assertThat(found.get(0).getDescription()).isEqualTo("Kenyer");
-        assertThat(found.get(1).getDescription()).isEqualTo("Kifli");
+    void getProductsByType() {
+        when(this.productRepository.findByProductType(ProductType.FOOD)).thenReturn(_prodlist);
+        assertThat(this.productService.getProductsByType(ProductType.FOOD)).isEqualTo(_list);
+    }
+
+    @Test
+    void sortProductsByPrice() {
+        when(this.productRepository.findAll()).thenReturn(_prodlist);
+
+        assertThat(this.productService.sortProductsByPrice(_list,true)).isEqualTo(_list);
+        assertThat(this.productService.getAllProducts().get(0).getDescription()).isEqualTo("A kenyer jo.");
+        assertThat(this.productService.getAllProducts().get(1).getDescription()).isEqualTo("Sajtos kifli");
+    }
+
+    @Test
+    void sortProductsByPrice_reversed(){
+        List<ProductDTO> _reversed = new ArrayList<>();
+        _reversed.add(productDTO2);
+        _reversed.add(productDTO);
+
+        List<Product> _prodlist_reversed = new ArrayList<>();
+        _prodlist_reversed.add(product2);
+        _prodlist_reversed.add(product);
+
+
+        assertThat(this.productService.sortProductsByPrice(_list,false)).isEqualTo(_reversed);
+
+        when(this.productRepository.findAll()).thenReturn(_prodlist_reversed);
+        assertThat(this.productService.getAllProducts().get(1).getDescription()).isEqualTo("A kenyer jo.");
+        assertThat(this.productService.getAllProducts().get(0).getDescription()).isEqualTo("Sajtos kifli");
+
+
 
     }
+
+
 
 
 }

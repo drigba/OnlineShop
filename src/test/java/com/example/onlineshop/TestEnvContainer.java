@@ -38,10 +38,7 @@ public class TestEnvContainer {
     }*/
 
     @Bean
-    public ProductService productService(){
-        ProductService mockroductService = Mockito.mock(ProductService.class);
-        return mockroductService;
-    }
+    public ProductService productService(){return new ProductService();}
 
     @Bean
     public ProductMapper productMapper(){

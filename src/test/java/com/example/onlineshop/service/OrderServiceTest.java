@@ -7,6 +7,7 @@ import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.enums.OrderStatus;
 import com.example.onlineshop.enums.ProductType;
 import com.example.onlineshop.mapper.OrderMapper;
+import com.example.onlineshop.repository.CartRepository;
 import com.example.onlineshop.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,9 @@ class OrderServiceTest {
 
     @MockBean
     private OrderRepository orderRepository;
+
+    @MockBean
+    private CartRepository cartRepository;
 
 /*
     @Autowired
