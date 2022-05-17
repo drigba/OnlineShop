@@ -1,10 +1,12 @@
 package com.example.onlineshop;
 
 import com.example.onlineshop.entity.Order;
+import com.example.onlineshop.mapper.CartMapper;
 import com.example.onlineshop.mapper.OrderMapper;
 import com.example.onlineshop.mapper.ProductMapper;
 import com.example.onlineshop.repository.OrderRepository;
 import com.example.onlineshop.repository.ProductRepository;
+import com.example.onlineshop.service.CartService;
 import com.example.onlineshop.service.ProductService;
 import com.example.onlineshop.service.OrderService;
 import org.mockito.Mockito;
@@ -54,9 +56,18 @@ public class TestEnvContainer {
     }
 
     @Bean
+    public CartMapper cartMapper(){
+        CartMapper mockcartMapper = Mockito.mock(CartMapper.class);
+        return mockcartMapper;
+    }
+
+    @Bean
     public OrderService orderService() {
         return new OrderService();
     }
+
+    @Bean
+    public CartService cartService(){return new CartService();}
 
 
 
