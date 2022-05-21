@@ -8,6 +8,7 @@ import com.example.onlineshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,11 +50,15 @@ public class ProductService {
     }
 
     public ProductDTO updateProduct(ProductDTO productDTO, Integer id) {
-        productRepository.getById(id).setName(productDTO.getName());
-        productRepository.getById(id).setPrice(productDTO.getPrice());
-        productRepository.getById(id).setProductType(productDTO.getProductType());
-        productRepository.getById(id).setDescription(productDTO.getDescription());
-        productRepository.getById(id).setPopularity(productDTO.getPopularity());
+        Product tobesaved = productRepository.getById(id);
+
+        tobesaved.setName(productDTO.getName());
+        tobesaved.setPrice(productDTO.getPrice());
+        tobesaved.setProductType(productDTO.getProductType());
+        tobesaved.setDescription(productDTO.getDescription());
+        tobesaved.setPopularity(productDTO.getPopularity());
+        productRepository.save(tobesaved);
+
         return productToDTO(productRepository.getById(id));
     }
 
@@ -87,5 +92,18 @@ public class ProductService {
                     .sorted(Comparator.comparingInt(ProductDTO::getPrice).reversed())
                     .collect(Collectors.toList());
         }
+    }
+
+    public ProductDTO getProduct(Integer id) {
+
+        return productToDTO(productRepository.getById(id));
+    }
+
+
+    public List<ProductDTO> getProductByName(String s) {
+        return productRepository.findByNameStartingWith(s)
+                .stream()
+                .map(this::productToDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -16,8 +16,21 @@ import java.util.List;
 public class Customer extends Person {
     private String address;
     @OneToOne
+    @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private Cart cart;
-    @OneToMany
-    //TODO JoinColumn
+    @ManyToMany
+    @JoinTable(
+            name= "customers_favproducts",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
     private List<Product> favourites;
+
+    @OneToMany
+    @JoinTable(
+            name = "customers_orders",
+            joinColumns = @JoinColumn(name="customer_id"),
+            inverseJoinColumns = @JoinColumn(name="order_id")
+    )
+    private List<Order> orders;
 }
