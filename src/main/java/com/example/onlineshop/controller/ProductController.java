@@ -26,6 +26,11 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @GetMapping(path="/get")
+    public ProductDTO getProduct(@RequestParam Integer id ){
+        return productService.getProduct(id);
+    }
+
     @PostMapping(path="/update")
     public ProductDTO updateProduct(@RequestBody ProductDTO productDTO, @RequestParam Integer id)
     {
@@ -49,6 +54,12 @@ public class ProductController {
     public List<ProductDTO> getProductsByType(@RequestParam ProductType productType)
     {
         return productService.getProductsByType(productType);
+    }
+
+    @GetMapping(path="/getbyname")
+    public List<ProductDTO> getProductsByName(@RequestParam String name)
+    {
+        return productService.getProductByName(name);
     }
 
     @GetMapping(path="/sortbyprice")

@@ -89,11 +89,13 @@ public class RetailerService {
     }
 
     public RetailerDTO updateRetailer(RetailerDTO retailerDTO, Integer id) {
-        retailerRepository.getById(id).setName(retailerDTO.getName());
-        retailerRepository.getById(id).setAddress(retailerDTO.getAddress());
-        retailerRepository.getById(id).setEmail(retailerDTO.getEmail());
-        retailerRepository.getById(id).setProducts(retailerDTO.getProducts());
-        retailerRepository.getById(id).setSold(retailerDTO.getSold());
+        Retailer tobesave = retailerRepository.getById(id);
+        tobesave.setName(retailerDTO.getName());
+        tobesave.setAddress(retailerDTO.getAddress());
+        tobesave.setEmail(retailerDTO.getEmail());
+        tobesave.setProducts(retailerDTO.getProducts());
+        tobesave.setSold(retailerDTO.getSold());
+        retailerRepository.save(tobesave);
         return retailerToDTO(retailerRepository.getById(id));
     }
 

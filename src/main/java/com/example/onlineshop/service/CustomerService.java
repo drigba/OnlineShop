@@ -1,6 +1,7 @@
 package com.example.onlineshop.service;
 
 import com.example.onlineshop.dtos.CustomerDTO;
+import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.entity.Cart;
 import com.example.onlineshop.entity.Customer;
 import com.example.onlineshop.entity.Person;
@@ -65,5 +66,9 @@ public class CustomerService {
         String subject = "Ne hagyja arvalkodni termekeit a kosaraban!";
         String shopName = "Anonymus";
         emailService.sendMessage(emails, subject, shopName);
+    }
+
+    public CustomerDTO getCustomer(Integer id) {
+        return customerToDTO(customerRepository.getById(id));
     }
 }
