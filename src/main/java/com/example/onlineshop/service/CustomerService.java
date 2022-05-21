@@ -13,6 +13,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CustomerService {
     @Autowired
@@ -41,6 +44,34 @@ public class CustomerService {
                 .favourites(customer.getFavourites())
                 .address(customer.getAddress())
                 .build();
+    }
+
+    public CustomerDTO createCustomer(CustomerDTO customerDTO){
+        Customer customer = dtoToCustomer(customerDTO);
+        customerRepository.save(customer);
+        return customerToDTO(customer);
+    }
+
+    public List<CustomerDTO> getAllCustomers() {
+        return customerRepository.findAll()
+                .stream()
+                .map(this::customerToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public CustomerDTO updateCustomer(CustomerDTO customerDTO, Integer id) {
+        Customer customer = customerRepository.getById(id);
+        customer.setName(customerDTO.getName());
+        customer.setAddress(customerDTO.getAddress());
+        customer.setEmail(customerDTO.getEmail());
+
+        customerRepository.save(customer);
+
+        return customerToDTO(customerRepository.getById(id));
+    }
+
+    public void deleteCustomer(Integer id) {
+        customerRepository.deleteById(id);
     }
 
     @Scheduled(cron = "0 0 3 1 * ?")
