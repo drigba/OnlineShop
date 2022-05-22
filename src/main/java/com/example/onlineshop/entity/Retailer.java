@@ -32,7 +32,7 @@ public class Retailer extends Person {
     @JoinTable(
             name= "retailers_sold",
             joinColumns = @JoinColumn(name = "retailer_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id")
+            inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private List<Order> sold;
+    private List<Product> sold;
 }

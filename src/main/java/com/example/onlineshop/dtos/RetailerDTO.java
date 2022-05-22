@@ -15,9 +15,11 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class RetailerDTO {
+    private Integer id;
+
     private String name;
     private String email;
     private String address;
     private List<Product> products;
-    private List<Order> sold;
+    private List<Product> sold;
 }
