@@ -73,7 +73,9 @@ class CartServiceTest {
         productDTO.setDescription("t1_description");
         productDTO.setPopularity(20);
 
-        _map.put(productDTO,Long.valueOf(1));
+        when(cartRepository.getById(1)).thenReturn(cart);
+
+        _map.put(productDTO,1L);
         _prodDTOlist.add(productDTO);
 
     }
@@ -82,21 +84,21 @@ class CartServiceTest {
     void addProductToCart() {
         when(this.productRepository.findByNameAndPriceAndDescription(productDTO.getName(),productDTO.getPrice(),productDTO.getDescription())).thenReturn(_product);
         when(this.cartRepository.save(cart)).thenReturn(cart);
-        assertThat(this.cartService.addProductToCart(productDTO,cartDTO)).isEqualTo(cartDTO);
+        assertThat(this.cartService.addProductToCart(productDTO,1)).isEqualTo(cartDTO);
     }
 
     @Test
     void deleteProductFromCart() {
         when(this.productRepository.findByNameAndPriceAndDescription(productDTO.getName(),productDTO.getPrice(),productDTO.getDescription())).thenReturn(_product);
         when(this.cartRepository.save(cart)).thenReturn(cart);
-        assertThat(this.cartService.deleteProductFromCart(productDTO,cartDTO)).isEqualTo(cartDTO);
+        assertThat(this.cartService.deleteProductFromCart(productDTO,1)).isEqualTo(cartDTO);
 
     }
 
     @Test
     void getCartContent() {
         when(this.productService.getSomeProducts(cart.getProducts())).thenReturn(_prodDTOlist);
-        assertThat(this.cartService.getCartContent(cartDTO)).isEqualTo(_map);
+        assertThat(this.cartService.getCartContent(1)).isEqualTo(_map);
     }
 
     @Test

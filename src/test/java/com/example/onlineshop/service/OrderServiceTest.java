@@ -2,28 +2,27 @@ package com.example.onlineshop.service;
 
 import com.example.onlineshop.TestEnvContainer;
 import com.example.onlineshop.dtos.OrderDTO;
+import com.example.onlineshop.entity.Cart;
+import com.example.onlineshop.entity.Customer;
 import com.example.onlineshop.entity.Order;
 import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.enums.OrderStatus;
 import com.example.onlineshop.enums.ProductType;
-import com.example.onlineshop.mapper.OrderMapper;
 import com.example.onlineshop.repository.CartRepository;
+import com.example.onlineshop.repository.CustomerRepository;
 import com.example.onlineshop.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -46,6 +45,8 @@ class OrderServiceTest {
     @MockBean
     private CartRepository cartRepository;
 
+    @MockBean
+    private CustomerRepository customerRepository;
 /*
     @Autowired
     private OrderMapper orderMapper;
@@ -82,6 +83,23 @@ class OrderServiceTest {
         order.setPrice(600);
         order.setOrderStatus(OrderStatus.DELIVERED);
 
+        Cart cart = Cart.builder().id(1).products(_prod).sumPrice(600).build();
+
+        Customer customer = Customer.builder()
+                        .id(1)
+                        .name("Pista")
+                        .email("pista@email.hu")
+                        .password("password")
+                        .address("valahol")
+                        .cart(cart)
+                        .favourites(new ArrayList<>())
+                        .orders(new ArrayList<>())
+                        .build();
+
+        when(customerRepository.getById(1)).thenReturn(customer);
+        when(customerRepository.getById(1).getCart()).thenReturn(cart);
+        when(customerRepository.getById(1).getCart().getProducts()).thenReturn(cart.getProducts());
+        when(customerRepository.getById(1).getCart().getSumPrice()).thenReturn(cart.getSumPrice());
 
         _list.add(orderDTO);
         _orders.add(order);
@@ -90,12 +108,13 @@ class OrderServiceTest {
     @Test
     void createOrder_test() {
         //when(this.orderRepository.save(order)).thenReturn(order);
-        assertThat(orderService.createOrder(orderDTO)).isEqualTo(orderDTO);
+
+        assertThat(orderService.createOrder(1).getPrice()).isEqualTo(customerRepository.getById(1).getCart().getSumPrice());
     }
 
     @Test
     void updateOrder_test() {
-        this.orderService.createOrder(orderDTO);
+        this.orderService.createOrder(1);
 
         OrderDTO orderDTO2 = new OrderDTO();
         //orderDTO.setId(1);

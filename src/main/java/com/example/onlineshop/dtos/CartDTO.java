@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,10 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class CartDTO implements Serializable {
+
     private List<Product> products;
     private Integer sumPrice;
-
+    private Integer id;
     public void setProducts(List<Product> products) {
         this.products = products;
     }
