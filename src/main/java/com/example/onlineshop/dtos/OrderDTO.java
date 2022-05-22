@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class OrderDTO {
+    private Integer id;
     private String fromAddress;
     private String address;
     private List<Product> productList;
