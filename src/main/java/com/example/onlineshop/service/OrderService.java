@@ -2,8 +2,10 @@ package com.example.onlineshop.service;
 
 import com.example.onlineshop.dtos.OrderDTO;
 import com.example.onlineshop.entity.Order;
+import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.enums.OrderStatus;
 import com.example.onlineshop.mapper.OrderMapper;
+import com.example.onlineshop.repository.CustomerRepository;
 import com.example.onlineshop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -41,9 +45,15 @@ public class OrderService {
                 .build();
     }
 
-
-    public OrderDTO createOrder(OrderDTO orderDTO){
-        Order order = dtoToOrder(orderDTO);
+    public OrderDTO createOrder(Integer customerId){
+        List<Product> productList= customerRepository.getById(customerId).getCart().getProducts();
+        Integer sumPrice = 0;
+        for (Product product : productList) {
+            sumPrice += product.getPrice();
+        }
+        Order order = new Order();
+        order.setProductList(productList);
+        order.setPrice(sumPrice);
         orderRepository.save(order);
         return orderToDTO(order);
     }
@@ -62,9 +72,6 @@ public class OrderService {
     public void deleteOrder(Integer id) {
         orderRepository.deleteById(id);
     }
-
-
-
 
     public List<OrderDTO> getAllOrders() {
         return orderRepository.findAll()

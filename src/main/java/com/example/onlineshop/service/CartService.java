@@ -59,8 +59,8 @@ public class CartService {
     }
 
 
-    public Map<ProductDTO, Long> getCartContent(CartDTO cartDTO){
-        Cart cart = dtoToCart(cartDTO);
+    public Map<ProductDTO, Long> getCartContent(Integer id){
+        Cart cart = cartRepository.getById(id);
         List<ProductDTO> products= productService.getSomeProducts(cart.getProducts());
         Map<ProductDTO, Long> content = new HashMap<>();
         List<ProductDTO> uniqueProducts = new ArrayList<>();

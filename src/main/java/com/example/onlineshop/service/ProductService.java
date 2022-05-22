@@ -19,9 +19,6 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private ProductMapper productMapper;
-
     private Product dtoToProduct(ProductDTO productDTO){
         return Product.builder()
                 .name(productDTO.getName())
@@ -100,9 +97,6 @@ public class ProductService {
                     .collect(Collectors.toList());
         }
     }
-
-
-  }
 
     public ProductDTO getProduct(Integer id) {
 

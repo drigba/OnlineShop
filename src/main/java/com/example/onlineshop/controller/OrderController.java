@@ -19,8 +19,8 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping(path="/save")
-    public OrderDTO createOrder(@RequestBody OrderDTO orderDTO){
-        return orderService.createOrder(orderDTO);
+    public OrderDTO createOrder(@RequestParam Integer customerId){
+        return orderService.createOrder(customerId);
     }
 
     @GetMapping(path="/getall")

@@ -55,7 +55,7 @@ class CartControllerTest {
         productDTO.setProductType(ProductType.FOOD);
 
 
-        _map.put(productDTO,Long.valueOf(1));
+        _map.put(productDTO,1L);
         //_map.put(productDTO,Long.valueOf(1));
 
         List<Product> _prod = new ArrayList<>();
@@ -68,7 +68,7 @@ class CartControllerTest {
 
     @Test
     void addProductToCart() throws  Exception{
-        when(cartService.addProductToCart(productDTO,cartDTO)).thenReturn(cartDTO);
+        when(cartService.addProductToCart(productDTO, 1)).thenReturn(cartDTO);
         mockMvc.perform(post("/cart/addproduct").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cartDTO)))
                 .andExpect(status().isCreated());
@@ -81,7 +81,7 @@ class CartControllerTest {
     @Test
     void getCartContent() throws Exception {
 
-        when(cartService.getCartContent(cartDTO)).thenReturn(_map);
+        when(cartService.getCartContent(1)).thenReturn(_map);
         mockMvc.perform(get("/cart/getcontent")).andExpect(status().isOk());
     }
 

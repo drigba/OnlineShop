@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -56,17 +57,17 @@ public class CartControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @MockBean
+    @Autowired
     private CartService cartService;
 
     @MockBean
     private CartRepository cartRepository;
 
-    @MockBean
+    @Autowired
     private ProductMapper productMapper;
 
-    @MockBean
     private CartDTO cartDTO;
+    private Cart cart;
 
     @BeforeEach
     void setUp() {
@@ -84,7 +85,11 @@ public class CartControllerTest {
         System.out.println("cartDTO product size:  " + cartDTO.getProducts().size());
         cartDTO.setSumPrice(600);
 
-        cartService.addProductToCart(productDTO,cartDTO);
+        cart = Cart.builder().id(1).products(_prod).sumPrice(600).build();
+
+        when(cartRepository.getById(1)).thenReturn(cart);
+
+        cartService.addProductToCart(productDTO,1);
 
 
     }
