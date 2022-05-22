@@ -2,9 +2,7 @@ package com.example.onlineshop.controller;
 
 import com.example.onlineshop.dtos.OrderDTO;
 
-import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.enums.OrderStatus;
-import com.example.onlineshop.enums.ProductType;
 import com.example.onlineshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

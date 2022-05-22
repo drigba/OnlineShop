@@ -3,14 +3,11 @@ package com.example.onlineshop.service;
 import com.example.onlineshop.dtos.CartDTO;
 import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.entity.Cart;
-import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.mapper.CartMapper;
 import com.example.onlineshop.repository.CartRepository;
 import com.example.onlineshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -68,6 +65,7 @@ public class CartService {
     public void deleteAllProductsFromCart(CartDTO cartDTO){
         Cart cart = dtoToCart(cartDTO);
         cart.getProducts().clear();
+        cart.setSumPrice(0);
         cartRepository.save(cart);
     }
 }
