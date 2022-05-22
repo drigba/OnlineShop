@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -22,10 +20,19 @@ import java.util.List;
 public class Retailer extends Person {
     private String address;
 
-    @OneToMany
-    //TODO JoinColumn
+    @ManyToMany
+    @JoinTable(
+            name= "retailers_products",
+            joinColumns = @JoinColumn(name = "retailer_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
     private List<Product> products;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name= "retailers_sold",
+            joinColumns = @JoinColumn(name = "retailer_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id")
+    )
     private List<Order> sold;
 }

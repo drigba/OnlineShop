@@ -15,22 +15,22 @@ public class CartController {
     private CartService cartService;
 
     @PostMapping(path="/addproduct")
-    public CartDTO addProductToCart(@RequestBody ProductDTO productDTO,@RequestBody CartDTO cartDTO){
-        return cartService.addProductToCart(productDTO, cartDTO);
+    public CartDTO addProductToCart(@RequestBody ProductDTO productDTO,@RequestParam Integer id){
+        return cartService.addProductToCart(productDTO, id);
     }
 
     @PostMapping(path="/deleteproduct")
-    public CartDTO deleteProductFromCart(@RequestBody ProductDTO productDTO,@RequestBody CartDTO cartDTO){
-        return cartService.deleteProductFromCart(productDTO, cartDTO);
+    public CartDTO deleteProductFromCart(@RequestBody ProductDTO productDTO,@RequestParam Integer id){
+        return cartService.deleteProductFromCart(productDTO, id);
     }
 
     @GetMapping(path="/getcontent")
-    public Map<ProductDTO, Long> getCartContent(@RequestBody CartDTO cartDTO) {
-        return cartService.getCartContent(cartDTO);
+    public Map<ProductDTO, Long> getCartContent(@RequestParam Integer id) {
+        return cartService.getCartContent(id);
     }
 
     @PostMapping(path="/clearcart")
-    public void clearCart(@RequestBody CartDTO cartDTO) {
-        cartService.deleteAllProductsFromCart(cartDTO);
+    public void clearCart(@RequestParam Integer id) {
+        cartService.deleteAllProductsFromCart(id);
     }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CartDTO {
+    private Integer id;
     private List<Product> products;
     private Integer sumPrice;
 }
