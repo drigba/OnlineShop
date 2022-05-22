@@ -20,4 +20,5 @@ public abstract class Person {
     protected String username;
     protected String email;
     protected String password;
+    protected String role;
 }

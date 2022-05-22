@@ -114,6 +114,6 @@ public class CustomerService {
     }
 
     Customer findCustomerByUsername(String username){
-        return customerRepository.findByUsername(username);
+        return customerRepository.findCustomerByUsername(username);
     }
 }

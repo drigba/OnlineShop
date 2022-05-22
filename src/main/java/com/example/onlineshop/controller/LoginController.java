@@ -12,11 +12,13 @@ public class LoginController {
     @Autowired
     private CustomerService customerService;
 
+    /*
     @RequestMapping(value="/login",method = RequestMethod.POST)
     public String Login(@RequestBody Pair<String, String> body){
         return customerService.authenticateCustomer(body.getFirst(),body.getSecond());
 
     }
+    */
 
 
 }
