@@ -34,6 +34,7 @@ public class ProductService {
 
     private ProductDTO productToDTO(Product product){
         return ProductDTO.builder()
+                .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
                 .productType(product.getProductType())

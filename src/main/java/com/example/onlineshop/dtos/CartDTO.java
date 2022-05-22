@@ -14,10 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class CartDTO implements Serializable {
+
     private List<Product> products;
     private Integer sumPrice;
-
+    private Integer id;
     public void setProducts(List<Product> products) {
         this.products = products;
     }

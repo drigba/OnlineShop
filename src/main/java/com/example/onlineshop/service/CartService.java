@@ -7,6 +7,7 @@ import com.example.onlineshop.mapper.CartMapper;
 import com.example.onlineshop.repository.CartRepository;
 import com.example.onlineshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,24 +38,26 @@ public class CartService {
 
     private CartDTO cartToDTO(Cart cart){
         return CartDTO.builder()
+                .id(cart.getId())
                 .products(cart.getProducts())
                 .sumPrice(cart.getSumPrice())
                 .build();
     }
 
-    public CartDTO addProductToCart(ProductDTO productDTO, CartDTO cartDTO){
-        Cart cart = dtoToCart(cartDTO);
+    public CartDTO addProductToCart(ProductDTO productDTO,Integer id){
+        Cart cart = cartRepository.getById(id);
         cart.getProducts().add(productRepository.findByNameAndPriceAndDescription(productDTO.getName(), productDTO.getPrice(), productDTO.getDescription()));
         cartRepository.save(cart);
         return cartToDTO(cart);
     }
 
-    public CartDTO deleteProductFromCart(ProductDTO productDTO, CartDTO cartDTO){
-        Cart cart = dtoToCart(cartDTO);
+    public CartDTO deleteProductFromCart(ProductDTO productDTO,Integer id){
+        Cart cart = cartRepository.getById(id);
         cart.getProducts().remove(productRepository.findByNameAndPriceAndDescription(productDTO.getName(), productDTO.getPrice(), productDTO.getDescription()));
         cartRepository.save(cart);
         return cartToDTO(cart);
     }
+
 
     public Map<ProductDTO, Long> getCartContent(CartDTO cartDTO){
         Cart cart = dtoToCart(cartDTO);
@@ -78,12 +81,18 @@ public class CartService {
             content.put(uniqueProducts.get(i), number.get(i));
         }
         return content;
+
     }
 
-    public void deleteAllProductsFromCart(CartDTO cartDTO){
-        Cart cart = dtoToCart(cartDTO);
+    public void deleteAllProductsFromCart(Integer id){
+        Cart cart = cartRepository.getById(id);
         cart.getProducts().clear();
         cart.setSumPrice(0);
         cartRepository.save(cart);
     }
+
+    public CartDTO getCart(Integer id){
+        return cartToDTO(cartRepository.getById(id));
+    }
+
 }

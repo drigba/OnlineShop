@@ -38,6 +38,7 @@ public class CustomerService {
     private CustomerDTO customerToDTO(Customer customer)
     {
         return CustomerDTO.builder()
+                .orders(customer.getOrders())
                 .name(customer.getName())
                 .email(customer.getEmail())
                 .cart(customer.getCart())

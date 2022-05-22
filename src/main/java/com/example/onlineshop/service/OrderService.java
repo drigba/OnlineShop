@@ -49,11 +49,13 @@ public class OrderService {
     }
 
     public OrderDTO updateOrder(OrderDTO orderDTO, Integer id) {
-        orderRepository.getById(id).setFromAddress(orderDTO.getFromAddress());
-        orderRepository.getById(id).setPrice(orderDTO.getPrice());
-        orderRepository.getById(id).setAddress(orderDTO.getAddress());
-        orderRepository.getById(id).setProductList(orderDTO.getProductList());
-        orderRepository.getById(id).setOrderStatus(orderDTO.getOrderStatus());
+        Order tobesaved = orderRepository.getById(id);
+        tobesaved.setFromAddress(orderDTO.getFromAddress());
+        tobesaved.setPrice(orderDTO.getPrice());
+        tobesaved.setAddress(orderDTO.getAddress());
+        tobesaved.setProductList(orderDTO.getProductList());
+        tobesaved.setOrderStatus(orderDTO.getOrderStatus());
+        orderRepository.save(tobesaved);
         return orderToDTO(orderRepository.getById(id));
     }
 
@@ -92,5 +94,9 @@ public class OrderService {
                 .stream()
                 .map(this::orderToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public OrderDTO getOrder(Integer id) {
+        return orderToDTO(orderRepository.getById(id));
     }
 }

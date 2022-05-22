@@ -10,7 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+
+public class ProductDTO {
+    
+
 public class ProductDTO implements Comparable<ProductDTO> {
+
+    private Integer id;
     private String name;
     private Integer price;
     private ProductType productType;
