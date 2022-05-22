@@ -3,6 +3,7 @@ package com.example.onlineshop.controller;
 import com.example.onlineshop.dtos.CustomerDTO;
 import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.service.CustomerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/customer")
+@Slf4j
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
@@ -34,6 +36,7 @@ public class CustomerController {
         }
         catch(Exception e)
         {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }

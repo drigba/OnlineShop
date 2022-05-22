@@ -40,10 +40,8 @@ public class EmailService {
     @Value("${spring.mail.password}")
     private String password;
 
-//    @Autowired
     private JavaMailSender mailSender;
 
-//    @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(host);

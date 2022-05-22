@@ -8,6 +8,7 @@ import com.example.onlineshop.entity.Person;
 import com.example.onlineshop.mapper.CustomerMapper;
 import com.example.onlineshop.repository.CartRepository;
 import com.example.onlineshop.repository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
@@ -50,6 +52,7 @@ public class CustomerService {
     public CustomerDTO createCustomer(CustomerDTO customerDTO){
         Customer customer = dtoToCustomer(customerDTO);
         customerRepository.save(customer);
+        log.info("Customer created: " + customerDTO.toString());
         return customerToDTO(customer);
     }
 
@@ -68,6 +71,7 @@ public class CustomerService {
 
         customerRepository.save(customer);
 
+        log.info("Customer updated at id: " + id);
         return customerToDTO(customerRepository.getById(id));
     }
 
@@ -87,6 +91,7 @@ public class CustomerService {
                     cart.setSumPrice(0);
                     cartRepository.save(cart);
                 });
+        log.info("Expired carts are emptied.");
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
@@ -98,6 +103,7 @@ public class CustomerService {
         String subject = "Ne hagyja arvalkodni termekeit a kosaraban!";
         String shopName = "Anonymus";
         emailService.sendMessage(emails, subject, shopName);
+        log.info("Email sent.");
     }
 
     public CustomerDTO getCustomer(Integer id) {

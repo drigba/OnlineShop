@@ -5,6 +5,7 @@ import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.enums.ProductType;
 import com.example.onlineshop.mapper.ProductMapper;
 import com.example.onlineshop.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ProductService {
 
     @Autowired
@@ -43,6 +45,7 @@ public class ProductService {
     public ProductDTO createProduct(ProductDTO productDTO){
         Product product = dtoToProduct(productDTO);
         productRepository.save(product);
+        log.info("Product created: " + productDTO.toString());
         return productToDTO(product);
     }
 
@@ -62,12 +65,14 @@ public class ProductService {
         tobesaved.setDescription(productDTO.getDescription());
         tobesaved.setPopularity(productDTO.getPopularity());
         productRepository.save(tobesaved);
-
+        log.info("Product updated: " + id);
         return productToDTO(productRepository.getById(id));
     }
 
     public void deleteProduct(Integer id) {
+
         productRepository.deleteById(id);
+        log.info("Product deleted: " + id);
     }
 
     public List<ProductDTO> getSomeProducts(List<Product> products) {

@@ -5,6 +5,7 @@ import com.example.onlineshop.dtos.OrderDTO;
 import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.enums.OrderStatus;
 import com.example.onlineshop.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/order")
+@Slf4j
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -43,6 +45,7 @@ public class OrderController {
         }
         catch(Exception e)
         {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }

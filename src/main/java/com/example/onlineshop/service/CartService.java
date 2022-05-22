@@ -6,6 +6,7 @@ import com.example.onlineshop.entity.Cart;
 import com.example.onlineshop.mapper.CartMapper;
 import com.example.onlineshop.repository.CartRepository;
 import com.example.onlineshop.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class CartService {
     @Autowired
     private CartRepository cartRepository;
@@ -48,6 +50,7 @@ public class CartService {
         Cart cart = cartRepository.getById(id);
         cart.getProducts().add(productRepository.findByNameAndPriceAndDescription(productDTO.getName(), productDTO.getPrice(), productDTO.getDescription()));
         cartRepository.save(cart);
+        log.info("Product ( "+ productDTO.getName() +") added to cart(" + id + ").");
         return cartToDTO(cart);
     }
 
@@ -55,6 +58,7 @@ public class CartService {
         Cart cart = cartRepository.getById(id);
         cart.getProducts().remove(productRepository.findByNameAndPriceAndDescription(productDTO.getName(), productDTO.getPrice(), productDTO.getDescription()));
         cartRepository.save(cart);
+        log.info("Product ( "+ productDTO.getName() +") deleted from cart(" + id + ").");
         return cartToDTO(cart);
     }
 
@@ -81,7 +85,6 @@ public class CartService {
             content.put(uniqueProducts.get(i), number.get(i));
         }
         return content;
-
     }
 
     public void deleteAllProductsFromCart(Integer id){
@@ -89,6 +92,7 @@ public class CartService {
         cart.getProducts().clear();
         cart.setSumPrice(0);
         cartRepository.save(cart);
+        log.info("All products deleted from cart(" + id + ").");
     }
 
     public CartDTO getCart(Integer id){

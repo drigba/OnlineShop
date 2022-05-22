@@ -7,6 +7,7 @@ import com.example.onlineshop.entity.Retailer;
 import com.example.onlineshop.mapper.RetailerMapper;
 import com.example.onlineshop.repository.ProductRepository;
 import com.example.onlineshop.repository.RetailerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class RetailerService {
     @Autowired
     private ProductRepository productRepository;
@@ -26,9 +28,6 @@ public class RetailerService {
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private RetailerMapper retailerMapper;
 
     private Retailer dtoToRetailer(RetailerDTO retailerDTO){
         return Retailer.builder()
@@ -55,6 +54,7 @@ public class RetailerService {
         Retailer retailer = dtoToRetailer(retailerDTO);
         retailer.getProducts().add(productRepository.findByNameAndPriceAndDescription(productDTO.getName(), productDTO.getPrice(), productDTO.getDescription()));
         retailerRepository.save(retailer);
+        log.info("Product added to stock: " + productDTO.toString());
         return retailerToDTO(retailer);
     }
 
@@ -62,6 +62,7 @@ public class RetailerService {
         Retailer retailer = dtoToRetailer(retailerDTO);
         retailer.getProducts().remove(productRepository.findByNameAndPriceAndDescription(productDTO.getName(), productDTO.getPrice(), productDTO.getDescription()));
         retailerRepository.save(retailer);
+        log.info("Product deleted from stock: " + productDTO.toString());
         return retailerToDTO(retailer);
     }
 
@@ -87,6 +88,7 @@ public class RetailerService {
     public RetailerDTO createRetailer(RetailerDTO retailerDTO) {
         Retailer retailer = dtoToRetailer(retailerDTO);
         retailerRepository.save(retailer);
+        log.info("Retailer created: " + retailerDTO.toString());
         return retailerToDTO(retailer);
     }
 
@@ -105,11 +107,14 @@ public class RetailerService {
         tobesave.setProducts(retailerDTO.getProducts());
         tobesave.setSold(retailerDTO.getSold());
         retailerRepository.save(tobesave);
+        log.info("Retailer updated: " + id);
         return retailerToDTO(retailerRepository.getById(id));
     }
 
     public void deleteRetailer(Integer id) {
+
         retailerRepository.deleteById(id);
+        log.info("Retaler deleted: " + id);
     }
 
     public RetailerDTO getRetailer(Integer id) {

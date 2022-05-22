@@ -7,6 +7,7 @@ import com.example.onlineshop.enums.OrderStatus;
 import com.example.onlineshop.mapper.OrderMapper;
 import com.example.onlineshop.repository.CustomerRepository;
 import com.example.onlineshop.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class OrderService {
 
     @Autowired
@@ -55,6 +57,7 @@ public class OrderService {
         order.setProductList(productList);
         order.setPrice(sumPrice);
         orderRepository.save(order);
+        log.info("Order created for customer: " + customerId);
         return orderToDTO(order);
     }
 
@@ -66,11 +69,13 @@ public class OrderService {
         tobesaved.setProductList(orderDTO.getProductList());
         tobesaved.setOrderStatus(orderDTO.getOrderStatus());
         orderRepository.save(tobesaved);
+        log.info("Order updated: " + id);
         return orderToDTO(orderRepository.getById(id));
     }
 
     public void deleteOrder(Integer id) {
         orderRepository.deleteById(id);
+        log.info("Order deleted: " + id);
     }
 
     public List<OrderDTO> getAllOrders() {
@@ -79,8 +84,6 @@ public class OrderService {
                 .map(this::orderToDTO)
                 .collect(Collectors.toList());
     }
-
-
 
     public List<OrderDTO> getSomeOrders(List<Order> sold) {
         return sold
