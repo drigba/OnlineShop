@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
+
+
     @Autowired
     private OrderRepository orderRepository;
 
@@ -20,11 +22,23 @@ public class OrderService {
     private OrderMapper orderMapper;
 
     private Order dtoToOrder(OrderDTO orderDTO){
-        return orderMapper.dtoToEntity(orderDTO);
+        return Order.builder()
+                .fromAddress(orderDTO.getFromAddress())
+                .address(orderDTO.getAddress())
+                .productList(orderDTO.getProductList())
+                .price(orderDTO.getPrice())
+                .orderStatus(orderDTO.getOrderStatus())
+                .build();
     }
 
     private OrderDTO orderToDTO(Order order){
-        return orderMapper.entityToDTO(order);
+        return OrderDTO.builder()
+                .fromAddress(order.getFromAddress())
+                .address(order.getAddress())
+                .productList(order.getProductList())
+                .price(order.getPrice())
+                .orderStatus(order.getOrderStatus())
+                .build();
     }
 
 

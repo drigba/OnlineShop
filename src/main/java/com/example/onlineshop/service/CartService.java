@@ -27,7 +27,10 @@ public class CartService {
     private ProductService productService;
 
     private Cart dtoToCart(CartDTO cartDTO){
-        return cartMapper.dtoToEntity(cartDTO);
+        return Cart.builder()
+                .products(cartDTO.getProducts())
+                .sumPrice(cartDTO.getSumPrice())
+                .build();
     }
 
     private CartDTO cartToDTO(Cart cart){

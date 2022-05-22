@@ -1,5 +1,6 @@
-package com.example.onlineshop;
+package com.example.onlineshop.service;
 
+import com.example.onlineshop.TestEnvContainer;
 import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.enums.ProductType;
@@ -27,15 +28,10 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
-//@WebMvcTest(ProductService.class)
 @SpringBootTest
 @ContextConfiguration(classes = TestEnvContainer.class)
 public class ProductServiceTest {
-
-    //@Autowired
-    //private MockMvc mvc;
 
     @MockBean
     private ProductRepository productRepository;
@@ -106,13 +102,6 @@ public class ProductServiceTest {
         productDTO.setProductType(ProductType.ELECTRONICS);
 
         assertThat(productService.createProduct(productDTO)).isEqualTo(productDTO);
-    }
-
-    @Before
-    public void init1(){
-
-
-        //when(productRepository.getById(2)).thenReturn(product2);
     }
 
     @Test
