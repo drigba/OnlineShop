@@ -102,4 +102,18 @@ public class CustomerService {
     public CustomerDTO getCustomer(Integer id) {
         return customerToDTO(customerRepository.getById(id));
     }
+
+    public String authenticateCustomer(String name, String password){
+        Customer customer = findCustomerByUsername(name);
+        if(customer == null) return "custoemr null";
+        if(customer.getPassword().equalsIgnoreCase(password)){
+            return "authenticated";
+        }else{
+            return "password error";
+        }
+    }
+
+    Customer findCustomerByUsername(String username){
+        return customerRepository.findByUsername(username);
+    }
 }

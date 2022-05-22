@@ -7,6 +7,7 @@ import com.example.onlineshop.mapper.ProductMapper;
 import com.example.onlineshop.mapper.RetailerMapper;
 import com.example.onlineshop.repository.OrderRepository;
 import com.example.onlineshop.repository.ProductRepository;
+import com.example.onlineshop.repository.RetailerRepository;
 import com.example.onlineshop.service.CartService;
 import com.example.onlineshop.service.ProductService;
 import com.example.onlineshop.service.OrderService;
@@ -31,6 +32,12 @@ public class TestEnvContainer {
     public ProductRepository productRepository(){
         ProductRepository mockproductRepository = Mockito.mock(ProductRepository.class);
         return mockproductRepository;
+    }
+
+    @Bean
+    RetailerRepository retailerRepository(){
+        RetailerRepository mockretailerRepository = Mockito.mock(RetailerRepository.class);
+        return mockretailerRepository;
     }
 
    /* @Bean

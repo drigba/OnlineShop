@@ -4,8 +4,10 @@ import com.example.onlineshop.dtos.CartDTO;
 import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.enums.ProductType;
+import com.example.onlineshop.repository.RetailerRepository;
 import com.example.onlineshop.service.CartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.sun.source.tree.Tree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.*;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -31,8 +34,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class CartControllerTest {
 
+    @Autowired
+    private CartController controller;
+
     @MockBean
     private CartService cartService;
+
+    @MockBean
+    private RetailerRepository retailerRepository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,6 +52,9 @@ class CartControllerTest {
     ProductDTO productDTO = new ProductDTO();
     Map<ProductDTO, Long> _map = new TreeMap<>();
     CartDTO cartDTO = new CartDTO();
+
+    Gson gson = new Gson();
+
 
     @BeforeEach
     void setUp() {
@@ -80,12 +92,29 @@ class CartControllerTest {
 
     @Test
     void getCartContent() throws Exception {
-
-        when(cartService.getCartContent(cartDTO)).thenReturn(_map);
-        mockMvc.perform(get("/cart/getcontent")).andExpect(status().isOk());
+        String json = gson.toJson(cartDTO);
+        given(this.cartService.getCartContent(cartDTO)).willReturn(_map);
+        //when(cartService.getCartContent(cartDTO)).thenReturn(_map);
+        mockMvc.perform(get("/getcontent")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isOk());
     }
 
     @Test
     void clearCart() {
+    }
+
+    @Test
+    void testtest() throws Exception{
+
+        given(this.cartService.addProductToCart(productDTO,cartDTO)).willReturn(cartDTO);
+        String json1 = gson.toJson(productDTO);
+        String json2 = gson.toJson(cartDTO);
+        this.mockMvc.perform(post("/addproduct")
+                        //.sess
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString((cartDTO))))
+                .andExpect(status().isCreated());
     }
 }

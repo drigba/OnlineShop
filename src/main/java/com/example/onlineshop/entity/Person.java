@@ -17,6 +17,7 @@ public abstract class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
     protected String name;
+    protected String username;
     protected String email;
     protected String password;
 }
