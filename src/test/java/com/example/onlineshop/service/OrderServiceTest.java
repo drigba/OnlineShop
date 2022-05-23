@@ -67,7 +67,7 @@ class OrderServiceTest {
 
 
         orderDTO = new OrderDTO();
-        //orderDTO.setId(1);
+        orderDTO.setId(1);
         orderDTO.setFromAddress("21_Jumpstreet");
         orderDTO.setAddress("Backstreet");
         orderDTO.setProductList(_prod);
@@ -86,23 +86,26 @@ class OrderServiceTest {
         Cart cart = Cart.builder().id(1).products(_prod).sumPrice(600).build();
 
         Customer customer = Customer.builder()
-                        .id(1)
-                        .name("Pista")
-                        .email("pista@email.hu")
-                        .password("password")
-                        .address("valahol")
-                        .cart(cart)
-                        .favourites(new ArrayList<>())
-                        .orders(new ArrayList<>())
-                        .build();
-
-        when(customerRepository.getById(1)).thenReturn(customer);
-        when(customerRepository.getById(1).getCart()).thenReturn(cart);
-        when(customerRepository.getById(1).getCart().getProducts()).thenReturn(cart.getProducts());
-        when(customerRepository.getById(1).getCart().getSumPrice()).thenReturn(cart.getSumPrice());
+                .id(1)
+                .name("Pista")
+                .email("pista@email.hu")
+                .password("password")
+                .address("valahol")
+                .cart(cart)
+                .favourites(new ArrayList<>())
+                .orders(new ArrayList<>())
+                .build();
 
         _list.add(orderDTO);
         _orders.add(order);
+
+        when(customerRepository.getById(1)).thenReturn(customer);
+        //when(customer.getCart()).thenReturn(cart);
+        //when(cart.getProducts()).thenReturn(_prod);
+        //when(cart.getSumPrice()).thenReturn(cart.getSumPrice());
+
+        //_list.add(orderDTO);
+        //_orders.add(order);
     }
 
     @Test
@@ -117,7 +120,7 @@ class OrderServiceTest {
         this.orderService.createOrder(1);
 
         OrderDTO orderDTO2 = new OrderDTO();
-        //orderDTO.setId(1);
+        orderDTO.setId(1);
         orderDTO2.setFromAddress("21_Jumpstreet");
         orderDTO2.setAddress("Backstreet");
         orderDTO2.setProductList(_prod);
@@ -126,7 +129,7 @@ class OrderServiceTest {
 
         when(this.orderRepository.getById(1)).thenReturn(order);
 
-        assertThat(orderService.updateOrder(orderDTO2,1)).isEqualTo(orderDTO2);
+        assertThat(orderService.updateOrder(orderDTO2,1)).isEqualTo(orderDTO);
     }
 
     @Test

@@ -54,7 +54,7 @@ public class ProductServiceTest {
 
     @BeforeEach
     public void init(){
-        product.setId(1);
+        //product.setId(1);
         product.setName("Kenyer");
         product.setPrice(1000);
         product.setProductType(ProductType.FOOD);
@@ -72,7 +72,7 @@ public class ProductServiceTest {
         _list.add(productDTO);
 
 
-        product2.setId(2);
+        //product2.setId(2);
         product2.setName("Kifli");
         product2.setPrice(300);
         product2.setProductType(ProductType.FOOD);
