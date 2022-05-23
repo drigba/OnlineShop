@@ -25,12 +25,12 @@ public class CartController {
     }
 
     @GetMapping(path="/getcontent")
-    public Map<ProductDTO, Long> getCartContent(@RequestParam Integer id) {
+    public Map<Integer, Long> getCartContent(@RequestParam Integer id) {
         return cartService.getCartContent(id);
     }
 
     @PostMapping(path="/clearcart")
-    public void clearCart(@RequestParam Integer id) {
+    public void clearCart(@RequestBody Integer id) {
         cartService.deleteAllProductsFromCart(id);
     }
 }

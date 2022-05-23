@@ -22,6 +22,10 @@ public class RetailerController {
         return retailerService.createRetailer(retailerDTO);
     }
 
+    @PostMapping(path = "/login")
+    public Integer loginCustomer(@RequestBody String password, @RequestParam String email){
+        return  retailerService.authenticate(email, password);
+    }
     @GetMapping(path="/getall")
     public List<RetailerDTO> getAllRetailers(){
         return retailerService.getAllRetailers();

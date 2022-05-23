@@ -1,6 +1,7 @@
 package com.example.onlineshop.service;
 
 import com.example.onlineshop.dtos.OrderDTO;
+import com.example.onlineshop.entity.Customer;
 import com.example.onlineshop.entity.Order;
 import com.example.onlineshop.entity.Product;
 import com.example.onlineshop.enums.OrderStatus;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +41,7 @@ public class OrderService {
 
     private OrderDTO orderToDTO(Order order){
         return OrderDTO.builder()
+                .id(order.getId())
                 .fromAddress(order.getFromAddress())
                 .address(order.getAddress())
                 .productList(order.getProductList())
@@ -48,15 +51,20 @@ public class OrderService {
     }
 
     public OrderDTO createOrder(Integer customerId){
+        Customer customer = customerRepository.getById(customerId);
         List<Product> productList= customerRepository.getById(customerId).getCart().getProducts();
         Integer sumPrice = 0;
         for (Product product : productList) {
             sumPrice += product.getPrice();
         }
         Order order = new Order();
-        order.setProductList(productList);
+        order.setProductList(new ArrayList<>(productList));
         order.setPrice(sumPrice);
+        order.setAddress(customer.getAddress());
+        order.setOrderStatus(OrderStatus.ORDERED);
         orderRepository.save(order);
+        customer.getOrders().add(order);
+        customerRepository.save(customer);
         log.info("Order created for customer: " + customerId);
         return orderToDTO(order);
     }

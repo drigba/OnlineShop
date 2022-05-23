@@ -33,6 +33,7 @@ public class CartService {
 
     private Cart dtoToCart(CartDTO cartDTO){
         return Cart.builder()
+                .id(cartDTO.getId())
                 .products(cartDTO.getProducts())
                 .sumPrice(cartDTO.getSumPrice())
                 .build();
@@ -40,6 +41,7 @@ public class CartService {
 
     private CartDTO cartToDTO(Cart cart){
         return CartDTO.builder()
+
                 .id(cart.getId())
                 .products(cart.getProducts())
                 .sumPrice(cart.getSumPrice())
@@ -63,35 +65,43 @@ public class CartService {
     }
 
 
-    public Map<ProductDTO, Long> getCartContent(Integer id){
+    public Map<Integer, Long> getCartContent(Integer id){
         Cart cart = cartRepository.getById(id);
         List<ProductDTO> products= productService.getSomeProducts(cart.getProducts());
-        Map<ProductDTO, Long> content = new HashMap<>();
-        List<ProductDTO> uniqueProducts = new ArrayList<>();
+        Map<Integer, Long> content = new HashMap<>();
+        List<Integer> uniqueProducts = new ArrayList<>();
         List<Long> number = new ArrayList<>();
-        uniqueProducts.add(products.get(0));
-        number.add(1L);
-        products.forEach(productDTO -> {
-            if(!uniqueProducts.contains(productDTO)){
-                uniqueProducts.add(productDTO);
-                number.add(1L);
-            } else {
-                Long num = number.get(uniqueProducts.indexOf(productDTO));
-                num++;
-                number.set(uniqueProducts.indexOf(productDTO), num);
+        if(products.size() != 0){
+            uniqueProducts.add(products.get(0).getId());
+            number.add(1L);
+            products.forEach(productDTO -> {
+                if(!uniqueProducts.contains(productDTO.getId())){
+                    uniqueProducts.add(productDTO.getId());
+                    number.add(1L);
+                } else {
+                    Long num = number.get(uniqueProducts.indexOf(productDTO.getId()));
+                    num++;
+                    log.info(String.valueOf(num));
+                    number.set(uniqueProducts.indexOf(productDTO.getId()), num);
+                }
+            });
+            for (int i = 0; i < uniqueProducts.size(); i++) {
+                content.put(uniqueProducts.get(i), number.get(i));
             }
-        });
-        for (int i = 0; i < uniqueProducts.size(); i++) {
-            content.put(uniqueProducts.get(i), number.get(i));
         }
+        log.info(String.valueOf(content));
+
         return content;
     }
 
     public void deleteAllProductsFromCart(Integer id){
         Cart cart = cartRepository.getById(id);
+        log.info(String.valueOf(cartRepository.getById(id).getProducts()));
+
         cart.getProducts().clear();
         cart.setSumPrice(0);
         cartRepository.save(cart);
+        log.info(String.valueOf(cartRepository.getById(id).getProducts()));
         log.info("All products deleted from cart(" + id + ").");
     }
 

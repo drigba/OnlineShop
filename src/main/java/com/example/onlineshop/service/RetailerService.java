@@ -3,6 +3,7 @@ package com.example.onlineshop.service;
 import com.example.onlineshop.dtos.OrderDTO;
 import com.example.onlineshop.dtos.ProductDTO;
 import com.example.onlineshop.dtos.RetailerDTO;
+import com.example.onlineshop.entity.Customer;
 import com.example.onlineshop.entity.Retailer;
 import com.example.onlineshop.mapper.RetailerMapper;
 import com.example.onlineshop.repository.ProductRepository;
@@ -75,16 +76,26 @@ public class RetailerService {
                 );
     }
 
-    private Map<OrderDTO, Long> getSold (RetailerDTO retailerDTO){
+    private Map<ProductDTO, Long> getSold (RetailerDTO retailerDTO){
         Retailer retailer = dtoToRetailer(retailerDTO);
-        return orderService.getSomeOrders(retailer.getSold())
+        return productService.getSomeProducts(retailer.getSold())
                 .stream()
                 .collect(
                         Collectors.groupingBy(Function.identity(), Collectors.counting())
                 );
     }
 
+    public Integer authenticate(String email, String password) {
+        String e = email;
+        log.info(e);
+        Retailer c = retailerRepository.findRetailerByEmail(e);
+        if (c != null) {
+            log.info(c.getPassword() + " - " + password);
+            return (password.equals(c.getPassword())) ? c.getId() : -1;
+        }
+        return -1;
 
+    }
     public RetailerDTO createRetailer(RetailerDTO retailerDTO) {
         Retailer retailer = dtoToRetailer(retailerDTO);
         retailerRepository.save(retailer);

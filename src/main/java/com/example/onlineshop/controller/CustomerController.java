@@ -18,6 +18,11 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @PostMapping(path = "/login")
+    public Integer loginCustomer(@RequestBody String password, @RequestParam String email){
+        return  customerService.authenticate(email, password);
+    }
+
     @PostMapping(path="/create")
     public CustomerDTO createCustomer(@RequestBody CustomerDTO customerDTO){ return customerService.createCustomer(customerDTO); }
 

@@ -21,7 +21,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping(path="/save")
-    public OrderDTO createOrder(@RequestParam Integer customerId){
+    public OrderDTO createOrder(@RequestBody Integer customerId){
         return orderService.createOrder(customerId);
     }
 
@@ -29,6 +29,8 @@ public class OrderController {
     public List<OrderDTO> getAllOrders(){
         return orderService.getAllOrders();
     }
+
+
 
     @PostMapping(path="/update")
     public OrderDTO updateOrder(@RequestBody OrderDTO orderDTO, @RequestParam Integer id)
