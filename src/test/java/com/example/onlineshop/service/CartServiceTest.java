@@ -75,7 +75,7 @@ class CartServiceTest {
 
         when(cartRepository.getById(1)).thenReturn(cart);
 
-        _map.put(productDTO,1L);
+        _map.put(productDTO,Long.valueOf(2));
         _prodDTOlist.add(productDTO);
 
     }

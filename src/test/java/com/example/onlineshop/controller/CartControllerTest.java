@@ -93,7 +93,7 @@ class CartControllerTest {
     @Test
     void getCartContent() throws Exception {
         String json = gson.toJson(cartDTO);
-        given(this.cartService.getCartContent(cartDTO)).willReturn(_map);
+        given(this.cartService.getCartContent(1)).willReturn(_map);
         //when(cartService.getCartContent(cartDTO)).thenReturn(_map);
         mockMvc.perform(get("/getcontent")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,7 +108,7 @@ class CartControllerTest {
     @Test
     void testtest() throws Exception{
 
-        given(this.cartService.addProductToCart(productDTO,cartDTO)).willReturn(cartDTO);
+        given(this.cartService.addProductToCart(productDTO,1)).willReturn(cartDTO);
         String json1 = gson.toJson(productDTO);
         String json2 = gson.toJson(cartDTO);
         this.mockMvc.perform(post("/addproduct")

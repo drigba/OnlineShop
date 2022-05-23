@@ -66,11 +66,11 @@ public class CartService {
         List<ProductDTO> uniqueProducts = new ArrayList<>();
         List<Long> number = new ArrayList<>();
         uniqueProducts.add(products.get(0));
-        number.add(1L);
+        number.add(Long.valueOf(1));
         products.forEach(productDTO -> {
             if(!uniqueProducts.contains(productDTO)){
                 uniqueProducts.add(productDTO);
-                number.add(1L);
+                number.add(Long.valueOf(1));
             } else {
                 Long num = number.get(uniqueProducts.indexOf(productDTO));
                 num++;

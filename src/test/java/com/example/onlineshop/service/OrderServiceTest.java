@@ -96,13 +96,16 @@ class OrderServiceTest {
                         .orders(new ArrayList<>())
                         .build();
 
-        when(customerRepository.getById(1)).thenReturn(customer);
-        when(customerRepository.getById(1).getCart()).thenReturn(cart);
-        when(customerRepository.getById(1).getCart().getProducts()).thenReturn(cart.getProducts());
-        when(customerRepository.getById(1).getCart().getSumPrice()).thenReturn(cart.getSumPrice());
-
         _list.add(orderDTO);
         _orders.add(order);
+
+        when(customerRepository.getById(1)).thenReturn(customer);
+        //when(customer.getCart()).thenReturn(cart);
+        //when(cart.getProducts()).thenReturn(_prod);
+        //when(cart.getSumPrice()).thenReturn(cart.getSumPrice());
+
+        //_list.add(orderDTO);
+        //_orders.add(order);
     }
 
     @Test
