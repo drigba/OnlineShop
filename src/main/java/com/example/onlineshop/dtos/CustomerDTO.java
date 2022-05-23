@@ -15,6 +15,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class CustomerDTO {
+    private String username;
+    private String password;
+    private String role;
     private Integer id;
     private String name;
     private String email;

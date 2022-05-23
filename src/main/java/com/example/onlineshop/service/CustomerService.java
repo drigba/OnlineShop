@@ -40,6 +40,8 @@ public class CustomerService {
     private CustomerDTO customerToDTO(Customer customer)
     {
         return CustomerDTO.builder()
+
+                .role(customer.getRole())
                 .orders(customer.getOrders())
                 .name(customer.getName())
                 .email(customer.getEmail())
@@ -73,6 +75,19 @@ public class CustomerService {
 
         log.info("Customer updated at id: " + id);
         return customerToDTO(customerRepository.getById(id));
+    }
+
+
+    public Integer authenticate(String email, String password){
+        String e = email;
+        log.info(e);
+        Customer c = customerRepository.findCustomerByEmail(e);
+        if(c != null){
+            log.info(c.getPassword() + " - " + password);
+            return (password.equals(c.getPassword())) ? c.getId() : -1;
+        }
+        return -1;
+
     }
 
     public void deleteCustomer(Integer id) {
