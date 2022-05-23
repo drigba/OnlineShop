@@ -51,6 +51,7 @@ class CartControllerTest {
 
     ProductDTO productDTO = new ProductDTO();
     Map<ProductDTO, Long> _map = new TreeMap<>();
+    Map<Integer, Long> _map1 = new TreeMap<>();
     CartDTO cartDTO = new CartDTO();
 
     Gson gson = new Gson();
@@ -93,7 +94,7 @@ class CartControllerTest {
     @Test
     void getCartContent() throws Exception {
         String json = gson.toJson(cartDTO);
-        given(this.cartService.getCartContent(cartDTO)).willReturn(_map);
+        given(this.cartService.getCartContent(1)).willReturn(_map1);
         //when(cartService.getCartContent(cartDTO)).thenReturn(_map);
         mockMvc.perform(get("/getcontent")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,7 +109,7 @@ class CartControllerTest {
     @Test
     void testtest() throws Exception{
 
-        given(this.cartService.addProductToCart(productDTO,cartDTO)).willReturn(cartDTO);
+        given(this.cartService.addProductToCart(productDTO,1)).willReturn(cartDTO);
         String json1 = gson.toJson(productDTO);
         String json2 = gson.toJson(cartDTO);
         this.mockMvc.perform(post("/addproduct")

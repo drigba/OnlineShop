@@ -1,24 +1,30 @@
 package com.example.onlineshop.controller;
 
-import com.example.onlineshop.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
 
-@RestController
+@Controller
 public class LoginController {
-    @Autowired
-    private CustomerService customerService;
 
-    /*
-    @RequestMapping(value="/login",method = RequestMethod.POST)
-    public String Login(@RequestBody Pair<String, String> body){
-        return customerService.authenticateCustomer(body.getFirst(),body.getSecond());
+    /**
+     * Build the view model for the login page (add authentication error
+     * information in the event of an unsuccessful login attempt).
+     */
+    @RequestMapping(value = "/loginprogress", method = RequestMethod.GET)
+    public ModelAndView login(@RequestParam(value = "error", required = false) String error) {
+
+        ModelAndView model = new ModelAndView();
+        if (error != null) {
+            model.addObject("message", "Username or password not recognised - please try again.");
+        }
+
+        model.setViewName("login");
+        return model;
 
     }
-    */
-
 
 }

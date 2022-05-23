@@ -95,9 +95,9 @@ class RetailerServiceTest {
         retailer.setEmail("belfort@stratton.com");
         retailer.setAddress("Wall Street");
         retailer.setProducts(_prod);
-        retailer.setSold(_orderlist);
+        retailer.setSold(_prod);
 
-        retailerDTO.setSold(_orderlist);
+        retailerDTO.setSold(_prod);
 
         _retailersDTO.add(retailerDTO);
 
